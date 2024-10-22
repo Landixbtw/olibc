@@ -9,9 +9,9 @@
  *  Hidding the implementation is good for maintainability, flexibility, security and preventing errors.
  *  Overall this makes it better and easier to use:
  *
- *  So now someone can then go ahead an declare char *something = malloc_create(sizeof(int));
  */
-typedef struct o_malloc o_malloc;
+
+typedef struct o_malloc_context o_malloc_context;
 
 typedef enum {
     O_MALLOC_OK = 0,                // Everything is fine
@@ -31,17 +31,30 @@ extern "C" {
  *
 */
 
-// Maybe give option to initialize ?
 
-
-// *_Nullable ptr ? 
-
-void malloc_create(size_t size); 
+/* 
+ * This initializes the memory context.
+ * @param heap_size parameter is the size of the memory pool to allocate
+ * @return o_malloc_status return value can help with error detection for success or failure
+ *
+ *
+ * There will be user level functions and lower level functions. User level function 
+ * will be something like o_malloc_init(), this is the "frontend" of the function 
+ * and something like void *allocate_memory_pool would be a lower level "backend" 
+ * function that does the actuall allocation. o_malloc_init would just do validation 
+ * of input and error checking, logic flow ...
+ *
+*/
+o_malloc_status o_malloc_init(size_t heap_size); 
 
 // https://stackoverflow.com/questions/77310920/what-is-nullable-pointer-in-c
 // https://www.man7.org/linux/man-pages/man3/malloc.3.html
 
-void malloc_free(void *_Nullable ptr);
+/*
+ * This frees allocated memory
+ * @param ptr: This is the pointer to the allocated memory block to free.
+*/
+void o_malloc_free(void *_Nullable ptr);
 
 
 #ifdef __cplusplus
